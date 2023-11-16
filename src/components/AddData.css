@@ -1,0 +1,69 @@
+.Container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: rgb(214, 232, 228);
+}
+
+.form {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #ecebcd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.mainheading {
+  text-align: center;
+  font-size: 50px;
+  color: rgb(40, 209, 25);
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  font-size: 20px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 20px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: rgb(69, 160, 139);
+}
+
+/* Add additional styling for checkboxes if needed */
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+h2 {
+  color: darkturquoise;
+  font-size: 28px;
+}
+h4 {
+  color: red;
+  font-size: 25px;
+}
