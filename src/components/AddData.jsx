@@ -118,6 +118,40 @@ const AddData = () => {
     number: "",
     distancefromAV: "",
     position: "",
+    gkschange: "",
+    folllowresult: "",
+  });
+
+  const [result, setResult] = useState({
+    None: false,
+    Cured: false,
+    NotCured: false,
+  });
+
+  const [blood, setBlood] = useState({
+    tlc: "",
+    dlc: "",
+    n: "",
+    m: "",
+    l: "",
+    e: "",
+    b: "",
+    nb: "",
+    esr: "",
+    fbs: "",
+    ppbs: "",
+    elisafortb: "",
+    igg: "",
+    igm: "",
+    iga: "",
+  });
+  const [mantostest, setMantosTest] = useState({
+    positive: false,
+    negative: false,
+  });
+  const [hiv, setHiv] = useState({
+    positive: false,
+    negative: false,
   });
 
   const handleInputChange = (e) => {
@@ -182,6 +216,25 @@ const AddData = () => {
     setCustomDate(e.target.value);
   };
 
+  const handleResultCheckboxChange = (option) => {
+    setResult((prevResult) => ({
+      ...prevResult,
+      [option]: !prevResult[option],
+    }));
+  };
+  const handleMantosTestCheckboxChange = (option) => {
+    setMantosTest((prevMantosTest) => ({
+      ...prevMantosTest,
+      [option]: !prevMantosTest[option],
+    }));
+  };
+  const handleHivCheckboxChange = (option) => {
+    setHiv((prevHiv) => ({
+      ...prevHiv,
+      [option]: !prevHiv[option],
+    }));
+  };
+
   //////////////////////////////////////////////////
   //////////////////////////////////////////////////
 
@@ -216,6 +269,10 @@ const AddData = () => {
       nearFistula,
       tenderness,
       ...extOpenings,
+      result,
+      ...blood,
+      mantostest,
+      hiv,
     };
 
     if (
@@ -359,9 +416,38 @@ const AddData = () => {
         number: "",
         distancefromAV: "",
         position: "",
+        gkschange: "",
+        folllowresult: "",
       };
       setExtOpenings(emptyExtOpenings);
+
+      const emptyResult = {
+        None: false,
+        Cured: false,
+        NotCured: false,
+      };
+      setResult(emptyResult);
+
       setCustomDate("");
+
+      const emptyBlood = {
+        tlc: "",
+        dlc: "",
+        n: "",
+        m: "",
+        l: "",
+        e: "",
+        b: "",
+        nb: "",
+        esr: "",
+        fbs: "",
+        ppbs: "",
+        elisafortb: "",
+        igg: "",
+        igm: "",
+        iga: "",
+      };
+      setBlood(emptyBlood);
 
       alert("Data uploaded successfully!");
     } catch (error) {
@@ -461,7 +547,7 @@ const AddData = () => {
             value={patientData.sex}
             onChange={handleInputChange}
           >
-            <option value="male">---Choose the Sex---</option>
+            <option value="">---Choose the Sex---</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
@@ -1119,7 +1205,6 @@ const AddData = () => {
         </label>
 
         <h2>Tenderness</h2>
-        <p>Choose the option that applies:</p>
 
         <label>
           <input
@@ -1171,6 +1256,233 @@ const AddData = () => {
               setExtOpenings({ ...extOpenings, position: e.target.value })
             }
           />
+        </label>
+        <label>
+          GKS Change:
+          <input
+            type="text"
+            name="extOpeningsGKSChange"
+            value={extOpenings.gkschange}
+            onChange={(e) =>
+              setExtOpenings({ ...extOpenings, gkschange: e.target.value })
+            }
+          />
+        </label>
+        <label>
+          Follow Result :
+          <input
+            type="text"
+            name="extOpeningsFollowResult"
+            value={extOpenings.folllowresult}
+            onChange={(e) =>
+              setExtOpenings({ ...extOpenings, folllowresult: e.target.value })
+            }
+          />
+        </label>
+
+        <h2>Result</h2>
+
+        <label>
+          <input
+            type="checkbox"
+            checked={result.None}
+            onChange={() => handleResultCheckboxChange("None")}
+          />
+          None
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={result.Cured}
+            onChange={() => handleResultCheckboxChange("Cured")}
+          />
+          Cured
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={result.NotCured}
+            onChange={() => handleResultCheckboxChange("NotCured")}
+          />
+          Not Cured
+        </label>
+
+        <h2>Investigations</h2>
+        <h4>Blood</h4>
+
+        <label>
+          DLC :
+          <input
+            type="text"
+            name="DLC"
+            value={blood.dlc}
+            onChange={(e) => setBlood({ ...blood, dlc: e.target.value })}
+          />
+        </label>
+        <label>
+          TLC :
+          <input
+            type="text"
+            name="TLC"
+            value={blood.tlc}
+            onChange={(e) => setBlood({ ...blood, tlc: e.target.value })}
+          />
+        </label>
+        <label>
+          N :
+          <input
+            type="text"
+            name="N"
+            value={blood.n}
+            onChange={(e) => setBlood({ ...blood, n: e.target.value })}
+          />
+        </label>
+        <label>
+          M :
+          <input
+            type="text"
+            name="M"
+            value={blood.m}
+            onChange={(e) => setBlood({ ...blood, m: e.target.value })}
+          />
+        </label>
+        <label>
+          L :
+          <input
+            type="text"
+            name="L"
+            value={blood.l}
+            onChange={(e) => setBlood({ ...blood, l: e.target.value })}
+          />
+        </label>
+        <label>
+          E :
+          <input
+            type="text"
+            name="E"
+            value={blood.e}
+            onChange={(e) => setBlood({ ...blood, e: e.target.value })}
+          />
+        </label>
+        <label>
+          B :
+          <input
+            type="text"
+            name="B"
+            value={blood.b}
+            onChange={(e) => setBlood({ ...blood, b: e.target.value })}
+          />
+        </label>
+        <label>
+          Hb :
+          <input
+            type="text"
+            name="Hb"
+            value={blood.hb}
+            onChange={(e) => setBlood({ ...blood, hb: e.target.value })}
+          />
+        </label>
+        <label>
+          ESR :
+          <input
+            type="text"
+            name="ESR"
+            value={blood.esr}
+            onChange={(e) => setBlood({ ...blood, esr: e.target.value })}
+          />
+        </label>
+        <label>
+          FBS :
+          <input
+            type="text"
+            name="FBS"
+            value={blood.fbs}
+            onChange={(e) => setBlood({ ...blood, fbs: e.target.value })}
+          />
+        </label>
+        <label>
+          PPBS :
+          <input
+            type="text"
+            name="PPBS"
+            value={blood.ppbs}
+            onChange={(e) => setBlood({ ...blood, ppbs: e.target.value })}
+          />
+        </label>
+        <label>
+          Elisa foe T.B. :
+          <input
+            type="text"
+            name="Elisa foe T.B."
+            value={blood.elisafortb}
+            onChange={(e) => setBlood({ ...blood, elisafortb: e.target.value })}
+          />
+        </label>
+
+        <label>
+          IgG :
+          <input
+            type="text"
+            name="IgG"
+            value={blood.igg}
+            onChange={(e) => setBlood({ ...blood, igg: e.target.value })}
+          />
+        </label>
+        <label>
+          IgM:
+          <input
+            type="text"
+            name="IgM"
+            value={blood.igm}
+            onChange={(e) => setBlood({ ...blood, igm: e.target.value })}
+          />
+        </label>
+        <label>
+          IgA :
+          <input
+            type="text"
+            name="IgA"
+            value={blood.iga}
+            onChange={(e) => setBlood({ ...blood, iga: e.target.value })}
+          />
+        </label>
+
+        <h4>Mantos Test</h4>
+
+        <label>
+          <input
+            type="checkbox"
+            checked={tenderness.positive}
+            onChange={() => handleMantosTestCheckboxChange("+ve")}
+          />
+          +ve
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={tenderness.negative}
+            onChange={() => handleMantosTestCheckboxChange("-ne")}
+          />
+          -ve
+        </label>
+
+        <h4>HIV </h4>
+
+        <label>
+          <input
+            type="checkbox"
+            checked={tenderness.positive}
+            onChange={() => handleHivCheckboxChange("+ve")}
+          />
+          +ve
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={tenderness.negative}
+            onChange={() => handleHivCheckboxChange("-ne")}
+          />
+          -ve
         </label>
 
         <button type="submit">Submit</button>
