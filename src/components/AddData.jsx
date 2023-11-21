@@ -2,9 +2,18 @@ import React, { useState } from "react";
 import "./AddData.css";
 
 import "firebase/firestore"; // Import the Firestore module
-import { db } from "../Firebase/FirebaseConfig";
+import { db, storage } from "../Firebase/FirebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
+
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 const AddData = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [imageURLs, setImageURLs] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+
+  const [uploadError, setUploadError] = useState(null);
   const [customDate, setCustomDate] = useState("");
   const [patientData, setPatientData] = useState({
     mrdNumber: "",
@@ -235,6 +244,34 @@ const AddData = () => {
     }));
   };
 
+  const handleImageUpload = (e) => {
+    const files = e.target.files;
+
+    if (!files || files.length === 0) {
+      return;
+    }
+
+    const fileList = Array.from(files);
+
+    // Display image preview
+    setImageFiles((prevFiles) => [
+      ...prevFiles,
+      ...fileList.slice(0, 5 - prevFiles.length),
+    ]);
+
+    // Clear the file input field after displaying the preview
+    const fileInput = document.querySelector(".imageInput");
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+  const handleUploadImage = () => {
+    // Trigger the file input click programmatically
+    const fileInput = document.querySelector(".imageInput");
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
   //////////////////////////////////////////////////
   //////////////////////////////////////////////////
 
@@ -249,13 +286,22 @@ const AddData = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Extract year, month, and day
     const fullDate = customDate;
 
-    // Create a string for the full date
+    const uploadedImageURLs = await Promise.all(
+      imageFiles.map(async (file) => {
+        const storageRef = ref(storage, `images/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        await uploadTask;
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        return downloadURL;
+      })
+    );
 
     // Combine patient data with clinical features
     const patientInfoWithFeatures = {
@@ -273,6 +319,7 @@ const AddData = () => {
       ...blood,
       mantostest,
       hiv,
+      imageURLs: uploadedImageURLs,
     };
 
     if (
@@ -448,8 +495,17 @@ const AddData = () => {
         iga: "",
       };
       setBlood(emptyBlood);
+      setImageURLs([]);
+
+      if (selectedImages.length > 0) {
+        // Update the document with the stored images
+        await updateDoc(doc(db, "PatientData", docRef.id), {
+          images: selectedImages,
+        });
+      }
 
       alert("Data uploaded successfully!");
+      setSelectedImages([]);
     } catch (error) {
       console.error("Error adding document: ", error);
 
@@ -1485,7 +1541,41 @@ const AddData = () => {
           -ve
         </label>
 
-        <button type="submit">Submit</button>
+        <div>
+          <h2>Image Upload</h2>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="imageInput"
+            multiple
+          />
+          <button type="button" onClick={handleUploadImage}>
+            Upload Images
+          </button>
+
+          {uploadingImages && <p>Uploading images...</p>}
+          {uploadError && <p>{uploadError}</p>}
+
+          {imageFiles.length > 0 && (
+            <div>
+              <h4>Selected Images:</h4>
+              {imageFiles.map((file, index) => (
+                <img
+                  key={index}
+                  src={URL.createObjectURL(file)}
+                  alt={`Image ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Your other form fields go here */}
+
+          <button type="submit" onClick={handleSubmit}>
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );
