@@ -907,7 +907,7 @@ const AddData = () => {
             type="checkbox"
             checked={clinicalFeatures.duration.lessthan1}
             onChange={() =>
-              handleClinicalFeaturesCheckboxChange("duration", "lessthan1")
+              handleClinicalFeaturesCheckboxChange("duration", "<1 yrs")
             }
           />
           &lt; 1 Yrs
@@ -917,7 +917,7 @@ const AddData = () => {
             type="checkbox"
             checked={clinicalFeatures.duration.oneto2}
             onChange={() =>
-              handleClinicalFeaturesCheckboxChange("duration", "oneto2")
+              handleClinicalFeaturesCheckboxChange("duration", "1-2 yrs")
             }
           />
           1 - 2 Yrs
@@ -927,7 +927,7 @@ const AddData = () => {
             type="checkbox"
             checked={clinicalFeatures.duration.twoto3}
             onChange={() =>
-              handleClinicalFeaturesCheckboxChange("duration", "twoto3")
+              handleClinicalFeaturesCheckboxChange("duration", "2-3 yrs")
             }
           />
           2 - 3 Yrs
@@ -937,7 +937,7 @@ const AddData = () => {
             type="checkbox"
             checked={clinicalFeatures.duration.greaterthan3}
             onChange={() =>
-              handleClinicalFeaturesCheckboxChange("duration", "greaterthan3")
+              handleClinicalFeaturesCheckboxChange("duration", "> 3")
             }
           />
           &gt; 3 Years
